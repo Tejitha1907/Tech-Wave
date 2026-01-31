@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - StyleHub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8f9fa;
+        }
+
+        nav {
+            background: #2c3e50;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        nav .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav .logo {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-weight: 500;
+        }
+
+        nav a:hover {
+            color: #3498db;
+        }
+
+        .cart-icon {
+            position: relative;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #e74c3c;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .page-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .main-content {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .filters {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .filters h3 {
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 12px 25px;
+            background: #ecf0f1;
+            border: 2px solid #ecf0f1;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .filter-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .filter-btn.active {
+            background: #3498db;
+            color: white;
+            border-color: #3498db;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            position: relative;
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #e74c3c;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .product-info {
+            padding: 25px;
+        }
+
+        .product-category {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            margin-bottom: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .product-info h3 {
+            margin-bottom: 10px;
+            color: #2c3e50;
+            font-size: 1.2rem;
+        }
+
+        .product-info p {
+            color: #7f8c8d;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+
+        .product-price {
+            color: #e74c3c;
+            font-size: 1.6rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .add-to-cart {
+            width: 100%;
+            padding: 12px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: all 0.3s;
+            text-transform: uppercase;
+        }
+
+        .add-to-cart:hover {
+            background: #2980b9;
+            transform: scale(1.02);
+        }
+
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 80px;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #27ae60;
+            color: white;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            display: none;
+            align-items: center;
+            gap: 15px;
+            z-index: 2000;
+        }
+
+        .toast.show {
+            display: flex;
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+                gap: 1rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <a href="index.html" class="logo">🛍️ StyleHub</a>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li class="cart-icon">
+                    <a href="cart.html">🛒 Cart</a>
+                    <span class="cart-count" id="cartCount">0</span>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="page-header">
+        <h1>Our Products</h1>
+        <p>Explore our complete collection</p>
+    </div>
+
+    <div class="main-content">
+        <div class="filters">
+            <h3>Filter by Category</h3>
+            <div class="filter-group">
+                <button class="filter-btn active" onclick="filterProducts('all')">All Products</button>
+                <button class="filter-btn" onclick="filterProducts('men')">Men</button>
+                <button class="filter-btn" onclick="filterProducts('women')">Women</button>
+                <button class="filter-btn" onclick="filterProducts('accessories')">Accessories</button>
+            </div>
+        </div>
+
+        <div class="product-grid" id="productGrid">
+            <!-- Men's Products -->
+            <div class="product-card" data-category="men">
+                <div class="product-image">👕<span class="product-badge">NEW</span></div>
+                <div class="product-info">
+                    <span class="product-category">Men</span>
+                    <h3>Premium Cotton T-Shirt</h3>
+                    <p>Comfortable all-day wear</p>
+                    <div class="product-price">$29.99</div>
+                    <button class="add-to-cart" onclick="addToCart('Premium Cotton T-Shirt', 29.99, '👕')">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="men">
+                <div class="product-image">👖<span class="product-badge">SALE</span></div>
+                <div class="product-info">
+                    <span class="product-category">Men</span>
+                    <h3>Classic Denim Jeans</h3>
+                    <p>Premium quality denim</p>
+                    <div class="product-price">$79.99</div>
+                    <button class="add-to-cart" onclick="addToCart('Classic Denim Jeans', 79.99, '👖')">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="men">
+                <div class="product-image">🧥</div>
+                <div class="product-info">
+                    <span class="product-category">Men</span>
+                    <h3>Winter Jacket</h3>
+                    <p>Warm and stylish</p>
+                    <div class="product-price">$129.99</div>
+                    <button class="add-to-cart" onclick="addToCart('Winter Jacket', 129.99, '🧥')">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="men">
+                <div class="product-image">👔</div>
+                <div class="product-info">
+                    <span class="product-category">Men</span>
+                    <h3>Formal Dress Shirt</h3>
+                    <p>Perfect for office wear</p>
+                    <div class="product-price">$49.99</div>
+                    <button class="add-to-cart" onclick="addToCart('Formal Dress Shirt', 49.99, '👔')">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="men">
+                <div class="product-image">🩳</div>
+                <div class="product-info">
+                    <span class="product-category">Men</span>
+                    <h3>Sports Shorts</h3>
+                    <p>Perfect for workouts</p>
+                    <div class="product-price">$34.99</div>
+                    <button class="add-to-cart" onclick="addToCart('Sports Shorts', 34.99, '🩳')">Add to Cart</button>
+                </div>
+            </div>
+
+            <!-- Women's Products -->
+            <div class="product-card" data-category="women">
+                <div class="product-image">👗<span class="product-badge">HOT</span></div>
+                <div class="product-info">
+                    <span class="product-category">Women</span>
+                    <h3>Elegant Summer Dress</h3>
+                    <p>Light and breezy</p>
+                    <div class="product-price">$59.99</div>
+                    <button class="add-to-cart" onclick="addToCart('Elegant Summer Dress', 59.99, '👗')">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="women">
+                <div class="product-image">👚</div>
+                <div class="product-info">
+                    <span class="product-category">Women</span>
+                    <h3>Casual Blouse</h3>
+                    <p>Elegant and comfortable</p>
+                    <div class="product-price">$39.99</div>
+                    <button class="add-to-cart" onclick="addToCart('Casual Blouse', 39.99, '👚')">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="women">
+                <div class="product-image">👙<span class="product-badge">NEW</span></div>
+                <div class="product-info">
+                    <span class="product-category">Women</span>
+                    <h3>Beach Bikini Set</h3>
+                    <p>Perfect for summer</p>
+                    <div class="product-price">$44.99</div>
+                    <button class="add-to-cart" onclick="addToCart('Beach Bikini Set', 44.99, '👙')">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="women">
+                <div class="product-image">🥻</div>
+                <div class="product-info">
+                    <span class="product-category">Women</span>
+                    <h3>Traditional Saree</h3>
+                    <p>Elegant ethnic wear</p>
+                    <div class="product-price">$89.99</div>
+                    <button class="add-to-cart" onclick="addToCart('Traditional Saree', 89.99, '🥻')">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="women">
+                <div class="product-image">👘</div>
+                <div class="product-info">
+                    <span class="product-category">Women</span>
+                    <h3>Silk Kimono</h3>
+                    <p>Luxurious comfort</p>
+                    <div class="product-price">$99.99</div>
+                    <button class="add-to-cart" onclick="addToCart('Silk Kimono', 99.99, '👘')">Add to Cart</button>
+                </div>
+            </div>
+
+            <!-- Accessories -->
+            <div class="product-card" data-category="accessories">
+                <div class="product-image">🧢</div>
+                <div class="product-info">
+                    <span class="product-category">Accessories</span>
+                    <h3>Baseball Cap</h3>
+                    <p>Stylish headwear</p>
+                    <div class="product-price">$19.99</div>
+                    <button class="add-to-cart" onclick="addToCart('Baseball Cap', 19.99, '🧢')">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="accessories">
+                <div class="product-image">🧣</div>
+                <div class="product-info">
+                    <span class="product-category">Accessories</span>
+                    <h3>Winter Scarf</h3>
+                    <p>Warm and cozy</p>
+                    <div class="product-price">$24.99</div>
+                    <button class="add-to-cart" onclick="addToCart('Winter Scarf', 24.99, '🧣')">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="accessories">
+                <div class="product-image">👜<span class="product-badge">HOT</span></div>
+                <div class="product-info">
+                    <span class="product-category">Accessories</span>
+                    <h3>Designer Handbag</h3>
+                    <p>Premium collection</p>
+                    <div class="product-price">$99.99</div>
+                    <button class="add-to-cart" onclick="addToCart('Designer Handbag', 99.99, '👜')">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="accessories">
+                <div class="product-image">👞</div>
+                <div class="product-info">
+                    <span class="product-category">Accessories</span>
+                    <h3>Leather Shoes</h3>
+                    <p>Premium quality</p>
+                    <div class="product-price">$119.99</div>
+                    <button class="add-to-cart" onclick="addToCart('Leather Shoes', 119.99, '👞')">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="accessories">
+                <div class="product-image">🕶️</div>
+                <div class="product-info">
+                    <span class="product-category">Accessories</span>
+                    <h3>Sunglasses</h3>
+                    <p>UV protection</p>
+                    <div class="product-price">$39.99</div>
+                    <button class="add-to-cart" onclick="addToCart('Sunglasses', 39.99, '🕶️')">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="accessories">
+                <div class="product-image">⌚</div>
+                <div class="product-info">
+                    <span class="product-category">Accessories</span>
+                    <h3>Wrist Watch</h3>
+                    <p>Classic timepiece</p>
+                    <div class="product-price">$149.99</div>
+                    <button class="add-to-cart" onclick="addToCart('Wrist Watch', 149.99, '⌚')">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 StyleHub. All rights reserved.</p>
+    </footer>
+
+    <div class="toast" id="toast">
+        <span style="font-size: 1.5rem;">✓</span>
+        <span id="toastMessage">Item added to cart!</span>
+    </div>
+
+    <script>
+        function addToCart(productName, price, emoji) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            
+            const existingItem = cart.find(item => item.name === productName);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    name: productName,
+                    price: price,
+                    emoji: emoji,
+                    quantity: 1
+                });
+            }
+            
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            showToast(`${emoji} ${productName} added to cart!`);
+        }
+
+        function updateCartCount() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cartCount').textContent = totalItems;
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            toastMessage.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        function filterProducts(category) {
+            const cards = document.querySelectorAll('.product-card');
+            const buttons = document.querySelectorAll('.filter-btn');
+            
+            // Update active button
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Filter products
+            cards.forEach(card => {
+                if (category === 'all' || card.dataset.category === category) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCartCount();
+        });
+    </script>
+</body>
+</html>
